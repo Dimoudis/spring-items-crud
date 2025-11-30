@@ -8,7 +8,7 @@ The app provides basic REST endpoints for adding items, listing them, and search
 Handles the API endpoints
 
 GET /items – returns all items
-POST /addItem – adds a new item
+POST /addItem – adds a new item 
 GET /items/{code} – finds an item by code
 
 ◉ItemService
