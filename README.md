@@ -7,8 +7,8 @@ The app provides basic REST endpoints for adding items, listing them, and search
 ◉ItemController
 Handles the API endpoints
 
-GET /items – returns all items
-POST /addItem – adds a new item 
+GET /items – returns all items,
+POST /addItem – adds a new item, 
 GET /items/{code} – finds an item by code
 
 ◉ItemService
@@ -33,6 +33,6 @@ The table is created automatically based on the Item entity.
 ◉Testing:
 You can test with Postman:
 
-GET all items: http://localhost:8080/items
-POST add item: http://localhost:8080/addItem
+GET all items: http://localhost:8080/items,
+POST add item: http://localhost:8080/addItem,
 GET item by code: http://localhost:8080/items/{code}
