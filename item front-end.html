@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Items Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        // Όταν φορτώνει η σελίδα, δείχνει όλα τα items
+        $(document).ready(function() {
+            showAll();
+        });
+
+        // GET /items
+        function showAll() {
+            $.ajax({
+                url: "http://localhost:8080/items",
+                method: "GET",
+                success: function(items) {
+                    updateTable(items);
+                },
+                error: function(err) {
+                    console.error("Error fetching items:", err);
+                }
+            });
+        }
+
+        // Ενημέρωση του table
+        function updateTable(items) {
+            var table = document.getElementById("resultsTable");
+
+            // Καθαρίζουμε προηγούμενες σειρές
+            var rowCount = table.rows.length;
+            for (var i = rowCount - 1; i > 0; i--) {
+                table.deleteRow(i);
+            }
+
+            // Προσθέτουμε νέα rows
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var row = table.insertRow(-1);
+                row.insertCell(0).innerHTML = item.code;
+                row.insertCell(1).innerHTML = item.name;
+                row.insertCell(2).innerHTML = item.price;
+            }
+        }
+
+        // POST /addItem
+        function addItem() {
+            var code = document.getElementById("code").value;
+            var name = document.getElementById("name").value;
+            var price = parseFloat(document.getElementById("price").value);
+
+            $.ajax({
+                url: "http://localhost:8080/addItem",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    code: code,
+                    name: name,
+                    price: price
+                }),
+                success: function() {
+                    // Μετά την προσθήκη, ενημέρωσε τον πίνακα
+                    showAll();
+                    // Καθάρισε τα input fields
+                    document.getElementById("code").value = "";
+                    document.getElementById("name").value = "";
+                    document.getElementById("price").value = "";
+                },
+                error: function(err) {
+                    console.error("Error adding item:", err);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Existing Items</h1>
+    <table border="1" id="resultsTable">
+        <tr>
+            <th width="100">Code</th>
+            <th width="200">Name</th>
+            <th width="100">Price</th>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <h2>Add New Item</h2>
+    <table>
+        <tr>
+            <td>Code:</td>
+            <td><input type="text" id="code" /></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" id="name" /></td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td><input type="text" id="price" /></td>
+        </tr>
+    </table>
+    <button onclick="addItem();">Add Item</button>
+</body>
+</html>
